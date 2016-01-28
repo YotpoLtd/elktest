@@ -1,0 +1,26 @@
+nginx:
+  image: nginx
+  volumes:
+  - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  links:
+  - kibana
+  - elastic
+  ports:
+  - "80:80"
+
+elastic:
+  image: elasticsearch
+  volumes:
+  - ./elastic/config:/usr/share/elasticsearch/config
+  - ./elastic/data:/usr/share/elasticsearch/data
+  - ./elastic/plugins:/usr/share/elasticsearch/plugins
+  ports:
+  - "9200:9200"
+  - "9300:9300"
+
+kibana:
+  image: kibana
+  links:
+  - elastic:elasticsearch
+  ports:
+  - "5601:5601"
